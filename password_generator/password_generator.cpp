@@ -7,6 +7,7 @@ int main()
 		int pass_lenght{ 0 };
 		std::cout << "Enter password lenght: ";
 		std::cin >> pass_lenght;
+		//exception handling
 		while ((pass_lenght < 12 && std::cin.good()) || (pass_lenght > 48 && std::cin.good()) || (!std::cin.good())) {
 			if (pass_lenght < 12 && std::cin.good()) {
 				std::cout << "Password too short! Minimum 12 char." << std::endl;
@@ -28,7 +29,7 @@ int main()
 		//rand initialization
 		srand((unsigned int)time(NULL) + rand() % (unsigned int)time(NULL));
 		//special char in pass
-		char special_char[] = { ',', '.', '!', '#', '&', '/', '?', '\\', '|', '\0' };
+		char special_char[] = { ',', '.', '!', '@', '$', '%', '*', '_', '#', '&', '/', '?', '\\', '|', '\0' };
 		int special_char_amount{ 0 };
 		const int special_char_max{ pass_lenght / 4 };
 		int special_char_min{ pass_lenght / 8 };
