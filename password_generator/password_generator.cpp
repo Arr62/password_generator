@@ -1,13 +1,15 @@
 ﻿#include <iostream>
 #include <random>
-//
+#include <array>
+#include <string>
+
 int main()
 {
 	while (1) {
 		int pass_lenght{ 0 };
 		std::cout << "Enter password lenght: ";
 		std::cin >> pass_lenght;
-		//exception handling
+		//entering a pass lenght
 		while ((pass_lenght < 12 && std::cin.good()) || (pass_lenght > 48 && std::cin.good()) || (!std::cin.good())) {
 			if (pass_lenght < 12 && std::cin.good()) {
 				std::cout << "Password too short! Minimum 12 char." << std::endl;
@@ -28,36 +30,32 @@ int main()
 		}
 		//rand initialization
 		srand((unsigned int)time(NULL) + rand() % (unsigned int)time(NULL));
-		//special char in pass
-		char special_char[] = { ',', '.', '!', '@', '$', '%', '*', '_', '#', '&', '/', '?', '\\', '|', '\0' };
+		//array of special char
+		std::array<char, 13> special_char{ ',', '.', '!', '@', '$', '%', '*', '_', '#', '&', '/', '?', '\\'};
+		//number of special char in pass
 		int special_char_amount{ 0 };
+		//max number of special char in pass
 		const int special_char_max{ pass_lenght / 4 };
+		//min number of special char in pass
 		int special_char_min{ pass_lenght / 8 };
 		special_char_amount = rand() % (special_char_max - special_char_min + 1) + special_char_min;
-		//std::cout << "Special char: " << special_char_amount << std::endl;
-		//numbers in pass
+		//array of numbers
+		std::array<int, 10> numbers{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		//number of numbers in pass
 		int number_char_amount{ 0 };
+		//max number of numbers in pass
 		const int number_char_max{ pass_lenght / 4 };
+		//min number of numbers in pass
 		const int number_char_min{ pass_lenght / 8 };
 		number_char_amount = rand() % (number_char_max - number_char_min + 1) + number_char_min;
-		//std::cout << "Numbers: " << number_char_amount << std::endl;
-		//letters in pass
-		char letters[2 * 26 + 1];
-		int a{ 65 };
-		for (int i{ 0 }; i < (2 * 26); i++) {
-			letters[i] = a++;
-			if (a == 91) a = 97;
-		}
-		letters[2 * 26] = '\0';
+		//array of letters
+		std::array<char, 52> letters{ 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L',
+		'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z' };
+		//number of letters in pass
 		int letter_char_amount{ 0 };
 		letter_char_amount = pass_lenght - special_char_amount - number_char_amount;
-		//std::cout << "Letters: " << letter_char_amount << std::endl;
-		int* password_temp = new int[pass_lenght];
-		//init array with 0 values
-		for (int i{ 0 }; i < pass_lenght; i++) {
-			password_temp[i] = 0;
-		}
-		//
+		//vector contains temp password
+		std::vector<int> password_temp(pass_lenght, 0);
 		//0 -> letter
 		//1 -> number
 		//2 -> special char
@@ -77,27 +75,23 @@ int main()
 			}
 		}
 		//create password
-		char* password = new char[pass_lenght + 1];
+		std::string password{};
 		for (int i{ 0 }; i < pass_lenght; i++) {
 			if (password_temp[i] == 2) {
-				password[i] = special_char[rand() % (strlen(special_char) + 1)];
+				password += special_char.at(rand() % special_char.size());
 			}
 			else if (password_temp[i] == 1) {
-				password[i] = rand() % 10 + 48;
+				password += std::to_string(numbers.at(rand() % numbers.size()));
 			}
-			else if (password_temp[i] == 0) {
-				password[i] = letters[rand() % (strlen(letters) + 1)];
+			else {
+				password += letters.at(rand() % letters.size());
 			}
 		}
-		password[pass_lenght] = '\0';
 		//output password
-		for (int i{ 0 }; i < pass_lenght; i++) {
-			std::cout << password[i];
-		}
-		std::cout << std::endl;
-
-		delete[] password_temp;
-		delete[] password;
+		std::cout << "Generated password: " << password << std::endl << std::endl;
+		//clear password_temp and password
+		password_temp.clear();
+		password.clear();
 	}
 
 	return 0;
