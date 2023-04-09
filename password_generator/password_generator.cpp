@@ -54,43 +54,39 @@ int main()
 		//number of letters in pass
 		int letter_char_amount{ 0 };
 		letter_char_amount = pass_lenght - special_char_amount - number_char_amount;
-		//vector contains temp password
-		std::vector<int> password_temp(pass_lenght, 0);
-		//0 -> letter
-		//1 -> number
-		//2 -> special char
+		//password
+		std::string password{};
 		int spec_count{ 0 };
 		int number_count{ 0 };
-		int temp{ 0 };
-		for (int i{ 0 }; number_count != number_char_amount; i++) {
-			temp = rand() % pass_lenght;
-			//std::cout << temp << std::endl;
-			if (spec_count < special_char_amount && password_temp[temp] != 2) {
-				password_temp[temp] = 2;
-				spec_count++;
+		int index{ 0 };
+		enum c{letter = 0, number = 1, special_char_ = 2};
+		for (size_t i{ 0 }; i < pass_lenght; i++) {
+			index = rand() % 3;
+			if (spec_count < special_char_amount && index == c::special_char_) {
+				char actual_char = static_cast<char>(special_char.at(rand() % special_char.size()));
+				if (i > 0 && password.back() == actual_char) i -= 1;
+				else {
+					password += actual_char;
+					spec_count++;
+				}
 			}
-			else if (number_count < number_char_amount && password_temp[temp] != 2 && password_temp[temp] != 1) {
-				password_temp[temp] = 1;
-				number_count++;
-			}
-		}
-		//create password
-		std::string password{};
-		for (int i{ 0 }; i < pass_lenght; i++) {
-			if (password_temp[i] == 2) {
-				password += special_char.at(rand() % special_char.size());
-			}
-			else if (password_temp[i] == 1) {
-				password += std::to_string(numbers.at(rand() % numbers.size()));
+			else if (number_count < number_char_amount && index == c::number) {
+				int actual_char = numbers.at(rand() % numbers.size());
+				if (i > 0 && password.back() == actual_char) i -= 1;
+				else {
+					password += std::to_string(actual_char);
+					number_count++;
+				}
 			}
 			else {
-				password += letters.at(rand() % letters.size());
+				char actual_char = static_cast<char>(letters.at(rand() % letters.size()));
+				if (i > 0 && password.back() == actual_char) i -= 1;
+				else password += actual_char;
 			}
 		}
 		//output password
 		std::cout << "Generated password: " << password << std::endl << std::endl;
 		//clear password_temp and password
-		password_temp.clear();
 		password.clear();
 	}
 
