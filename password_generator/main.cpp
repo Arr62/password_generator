@@ -27,7 +27,7 @@ int main()
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				std::cout << "Wrong value...";
-				break;
+				return -1;
 			}
 		}
 		password.set_pass_lenght(pass_lenght);
