@@ -30,7 +30,7 @@ public:
 	//constructor
 	//Password();
 	//overload contructor
-	Password(uint8_t pass_lenght_ = 12, uint8_t special_char_amount_ = 4, uint8_t number_char_amount_ = 4, uint8_t letter_char_amount_ = 4);
+	Password(uint8_t pass_lenght_ = 12, uint8_t special_char_amount_ = 4, uint8_t number_char_amount_ = 4);
 	//destructor
 	~Password() = default;
 
@@ -39,20 +39,23 @@ public:
 	uint8_t get_pass_lenght();
 
 	//special char
+	std::array<char, 13> get_special_char();
 	void set_special_char_amount(uint8_t amount);
 	uint8_t get_special_char_amount();
 
 	//numbers
+	std::array<int, 10> get_numbers();
 	void set_number_char_amount(uint8_t amount);
 	uint8_t get_number_char_amount();
 
 	//letters
+	std::array<char, 52> get_letters();
 	void set_letter_char_amount(uint8_t amount);
 	uint8_t get_letter_char_amount();
 
 	//password
 	std::string get_password();
-	void generate_password();
+	bool generate_password();
 	void clear_password();
 };
 
